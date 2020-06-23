@@ -1,13 +1,40 @@
 import React, { useEffect, useState } from "react";
 import * as crewBossWageApi from "../../api/crewBossWageApi";
 import * as dateUtility from "../../utility/dateUtility";
+import PaginationControls from "../common/PaginationControls";
 
 function CrewBossWagePage() {
 	const [wages, setWages] = useState([]);
+	const [pagination, setPagination] = useState({
+		offset: 0,
+		limit: 50,
+		total: 0,
+	});
 
 	useEffect(() => {
-		crewBossWageApi.getWages().then((_wages) => setWages(_wages.data));
+		crewBossWageApi
+			.getWages(pagination.offset, pagination.limit)
+			.then((_wages) => {
+				setWages(_wages.data);
+				setPagination(_wages.pagination);
+				console.log(pagination);
+			});
 	}, []);
+
+	const handleClick = (e) => {
+		let offset = e.target.name;
+		setPagination({
+			offset: offset,
+			limit: pagination.limit,
+			total: pagination.total,
+		});
+
+		crewBossWageApi.getWages(offset, pagination.limit).then((_wages) => {
+			setWages(_wages.data);
+			setPagination(_wages.pagination);
+			console.log(pagination);
+		});
+	};
 
 	function renderRow(wage) {
 		return (
@@ -44,6 +71,11 @@ function CrewBossWagePage() {
 				</thead>
 				<tbody>{wages && wages.map(renderRow)}</tbody>
 			</table>
+			<PaginationControls
+				pagination={pagination}
+				label="Crew boss pages"
+				onClick={handleClick}
+			/>
 		</>
 	);
 }
