@@ -37,7 +37,7 @@ function MinimumWagePage() {
 						<th>Wage</th>
 					</tr>
 				</thead>
-				<tbody>{wages.map(renderRow)}</tbody>
+				<tbody>{wages && wages.map(renderRow)}</tbody>
 			</table>
 		</>
 	);

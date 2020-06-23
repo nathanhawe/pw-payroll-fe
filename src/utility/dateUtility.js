@@ -1,9 +1,9 @@
 import moment from "moment";
 
 export function formatDate(date) {
-	return moment(date).format("M/D/YYYY");
+	if (date) return moment(date).format("M/D/YYYY");
 }
 
 export function formatDateAndTime(date) {
-	return moment(date).format("M/D/YYYY h:mm A");
+	if (date) return moment.utc(date).local().format("M/D/YYYY h:mm A");
 }
