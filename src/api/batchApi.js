@@ -1,10 +1,10 @@
 import { handleResponse, handleError, retrieveAccessToken } from "./apiUtils";
 const baseUrl = process.env.REACT_APP_API_URL + "/api/batch/";
 
-export async function getBatches() {
+export async function getBatches(offset, limit) {
 	let accessToken = retrieveAccessToken();
 
-	return fetch(baseUrl, {
+	return fetch(`${baseUrl}?offset=${offset}&limit=${limit}`, {
 		method: "GET",
 		headers: {
 			Authorization: `Bearer ${accessToken}`,

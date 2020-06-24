@@ -1,13 +1,39 @@
 import React, { useEffect, useState } from "react";
 import * as minimumWageApi from "../../api/minimumWageApi";
 import * as dateUtility from "../../utility/dateUtility";
+import PaginationControls from "../common/PaginationControls";
 
 function MinimumWagePage() {
 	const [wages, setWages] = useState([]);
+	const [pagination, setPagination] = useState({
+		offset: 0,
+		limit: 20,
+		total: 0,
+	});
 
 	useEffect(() => {
-		minimumWageApi.getWages().then((_wages) => setWages(_wages.data));
+		minimumWageApi
+			.getWages(pagination.offset, pagination.limit)
+			.then((_wages) => {
+				setWages(_wages.data);
+				setPagination(_wages.pagination);
+			});
+		// eslint-disable-next-line
 	}, []);
+
+	const handleClick = (e) => {
+		let offset = e.target.name;
+		setPagination({
+			offset: offset,
+			limit: pagination.limit,
+			total: pagination.total,
+		});
+
+		minimumWageApi.getWages(offset, pagination.limit).then((_wages) => {
+			setWages(_wages.data);
+			setPagination(_wages.pagination);
+		});
+	};
 
 	function renderRow(wage) {
 		return (
@@ -39,6 +65,11 @@ function MinimumWagePage() {
 				</thead>
 				<tbody>{wages && wages.map(renderRow)}</tbody>
 			</table>
+			<PaginationControls
+				pagination={pagination}
+				label="Minimum wage pages"
+				onClick={handleClick}
+			/>
 		</>
 	);
 }

@@ -17,8 +17,8 @@ function CrewBossWagePage() {
 			.then((_wages) => {
 				setWages(_wages.data);
 				setPagination(_wages.pagination);
-				console.log(pagination);
 			});
+		// eslint-disable-next-line
 	}, []);
 
 	const handleClick = (e) => {
@@ -32,7 +32,6 @@ function CrewBossWagePage() {
 		crewBossWageApi.getWages(offset, pagination.limit).then((_wages) => {
 			setWages(_wages.data);
 			setPagination(_wages.pagination);
-			console.log(pagination);
 		});
 	};
 
@@ -73,7 +72,7 @@ function CrewBossWagePage() {
 			</table>
 			<PaginationControls
 				pagination={pagination}
-				label="Crew boss pages"
+				label="Crew boss wage pages"
 				onClick={handleClick}
 			/>
 		</>

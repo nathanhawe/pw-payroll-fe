@@ -7,6 +7,7 @@ import BatchList from "./BatchList";
 import BatchForm from "./BatchForm";
 import ServerErrors from "../common/ServerErrors";
 import BatchProcessingStatus from "./BatchProcessingStatus";
+import PaginationControls from "../common/PaginationControls";
 
 function BatchPage() {
 	const authContext = useContext(AuthenticationContext);
@@ -19,12 +20,20 @@ function BatchPage() {
 		company: "",
 		layoffId: "",
 	});
+	const [pagination, setPagination] = useState({
+		offset: 0,
+		limit: 10,
+		total: 0,
+	});
 	const [processingBatch, setProcessingBatch] = useState({});
 
 	useEffect(() => {
-		batchApi.getBatches().then((_batches) => {
-			setBatches(_batches.data);
-		});
+		batchApi
+			.getBatches(pagination.offset, pagination.limit)
+			.then((_batches) => {
+				setBatches(_batches.data);
+				setPagination(_batches.pagination);
+			});
 
 		const interval = setInterval(() => {
 			getStatus();
@@ -32,7 +41,22 @@ function BatchPage() {
 		getStatus();
 
 		return () => clearInterval(interval);
+		// eslint-disable-next-line
 	}, []);
+
+	const handleClick = (e) => {
+		let offset = e.target.name;
+		setPagination({
+			offset: offset,
+			limit: pagination.limit,
+			total: pagination.total,
+		});
+
+		batchApi.getBatches(offset, pagination.limit).then((_batches) => {
+			setBatches(_batches.data);
+			setPagination(_batches.pagination);
+		});
+	};
 
 	const getStatus = async () => {
 		let status = await batchProcessingStatusApi.getCurrentStatus();
@@ -104,6 +128,11 @@ function BatchPage() {
 			)}
 			<br /> <br />
 			<BatchList batches={batches} />
+			<PaginationControls
+				pagination={pagination}
+				label="Batch pages"
+				onClick={handleClick}
+			/>
 		</>
 	);
 }
