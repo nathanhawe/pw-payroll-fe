@@ -16,11 +16,11 @@
 	},
 	"scripts": {
 		"start": "run-p start:dev start:api",
-		"start-integration": "cross-env REACT_APP_API_URL=https://localhost:44337 react-scripts start",
-		"start:dev": "cross-env REACT_APP_API_URL=http://localhost:3001 react-scripts start",
+		"start-integration": "cross-env REACT_APP_URL=http://localhost:3000 REACT_APP_API_URL=https://localhost:44337 REACT_APP_IDENTITY_URL=https://localhost:6001 react-scripts start",
+		"start:dev": "cross-env REACT_APP_URL=http://localhost:3000 REACT_APP_API_URL=http://localhost:3001 REACT_APP_IDENTITY_URL=http://localhost:3001 react-scripts start",
 		"prestart:api": "node tools/createMockDb.js",
 		"start:api": "node tools/apiServer.js",
-		"build": "react-scripts build",
+		"build": "cross-env REACT_APP_URL=https://payroll.wawonapacking.com REACT_APP_API_URL=https://payroll-api.wawonapacking.com REACT_APP_IDENTITY_URL=https://identity.wawonapacking.com react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},

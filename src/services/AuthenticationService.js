@@ -18,7 +18,11 @@ export default class AuthenticationService {
 		});
 
 		Log.logger = console;
-		Log.level = Log.DEBUG;
+		if (process.env.NODE_ENV === "development") {
+			Log.level = Log.DEBUG;
+		} else {
+			Log.level = Log.ERROR;
+		}
 
 		/* userLoaded event is raised when user session has been established or re-established.  
 		This callback is not triggered when UserManager.GetUser() is initially called and loaded
