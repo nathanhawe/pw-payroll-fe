@@ -16,6 +16,7 @@ import { Callback } from "./auth/Callback";
 import { Logout } from "./auth/Logout";
 import { SilentRenew } from "./auth/SilentRenew";
 import { Login } from "./auth/Login";
+import SummaryBatchPage from "./summaryBatch/SummaryBatchPage";
 
 function App() {
 	return (
@@ -45,6 +46,10 @@ function App() {
 						<Route path="/login" component={Login} exact />
 
 						<PrivateRoute path="/batch" component={BatchPage} />
+						<PrivateRoute
+							path="/summary"
+							component={SummaryBatchPage}
+						/>
 						<PrivateRoute
 							path="/crew-boss-wage"
 							component={CrewBossWagePage}

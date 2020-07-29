@@ -26,6 +26,18 @@ const Header = () => {
 						""
 					)}
 
+					{authContext.userCanView(ENTITY.batch) ? (
+						<NavLink
+							to="/summary"
+							className="nav-link"
+							activeStyle={activeStyle}
+						>
+							Create Summaries
+						</NavLink>
+					) : (
+						""
+					)}
+
 					{authContext.userCanView(ENTITY.crewBossWage) ? (
 						<NavLink
 							to="/crew-boss-wage"
