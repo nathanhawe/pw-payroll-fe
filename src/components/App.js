@@ -17,6 +17,7 @@ import { Logout } from "./auth/Logout";
 import { SilentRenew } from "./auth/SilentRenew";
 import { Login } from "./auth/Login";
 import SummaryBatchPage from "./summaryBatch/SummaryBatchPage";
+import AuditLockBatchPage from "./auditLockBatch/AuditLockBatchPage";
 
 function App() {
 	return (
@@ -44,7 +45,10 @@ function App() {
 							exact
 						/>
 						<Route path="/login" component={Login} exact />
-
+						<PrivateRoute
+							path="/audit-lock"
+							component={AuditLockBatchPage}
+						/>
 						<PrivateRoute path="/batch" component={BatchPage} />
 						<PrivateRoute
 							path="/summary"

@@ -1,19 +1,44 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-function SummaryBatchForm(props) {
+function AuditLockBatchForm(props) {
 	return (
 		<>
-			<h2>Create Summaries (Vendor File)</h2>
-			<form onSubmit={props.onSubmit} className="border p-4 bg-warning">
+			<h2>Audit Lock</h2>
+			<form onSubmit={props.onSubmit} className="border p-4">
 				<p>
-					This form allows the user to create plant and ranch
-					summaries based on the data currently in Quick Base. Each
-					summary is a combination of a company ('Plants', or
-					'Ranches'), a week end date, and an optional layoff ID
-					number. You can create a new summary request to trigger the
-					creation of summaries below.
+					This form allows the user to lock and unlock plant and ranch
+					pay lines for audit. Each action is a combination of a
+					company ('Plants', or 'Ranches'), a week end date, and an
+					optional layoff ID number. You can create a new audit
+					lock/unlock request below. Please note that batches and
+					summaries share the same resources so if a batch is
+					currently processing or summaries are being created, audit
+					lock actions will wait until those complete before running.
 				</p>
+				<div className="form-group">
+					<button
+						className={
+							props.batch.lock
+								? "btn btn-primary"
+								: "btn btn-secondary"
+						}
+						onClick={props.lock}
+					>
+						Lock
+					</button>{" "}
+					or{" "}
+					<button
+						className={
+							props.batch.lock
+								? "btn btn-secondary"
+								: "btn btn-primary"
+						}
+						onClick={props.unlock}
+					>
+						Unlock
+					</button>
+				</div>
 				<div className="form-group">
 					<label htmlFor="company">Company</label>
 					<div className="field">
@@ -77,11 +102,13 @@ function SummaryBatchForm(props) {
 	);
 }
 
-SummaryBatchForm.propTypes = {
+AuditLockBatchForm.propTypes = {
 	batch: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	onChange: PropTypes.func.isRequired,
+	lock: PropTypes.func.isRequired,
+	unlock: PropTypes.func.isRequired,
 };
 
-export default SummaryBatchForm;
+export default AuditLockBatchForm;

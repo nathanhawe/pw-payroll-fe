@@ -16,6 +16,18 @@ const Header = () => {
 				<>
 					{authContext.userCanView(ENTITY.batch) ? (
 						<NavLink
+							to="/audit-lock"
+							className="nav-link"
+							activeStyle={activeStyle}
+						>
+							Audit Lock
+						</NavLink>
+					) : (
+						""
+					)}
+
+					{authContext.userCanView(ENTITY.batch) ? (
+						<NavLink
 							to="/batch"
 							className="nav-link"
 							activeStyle={activeStyle}
