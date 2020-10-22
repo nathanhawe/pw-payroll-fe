@@ -3,9 +3,42 @@ import PropTypes from "prop-types";
 import * as dateUtility from "../../utility/dateUtility";
 
 function BatchList(props) {
+	const statusText = (statusCode) => {
+		switch (statusCode) {
+			case 0:
+				return "Not Started";
+			case 1:
+				return "Preparing to Start Summaries";
+			case 2:
+				return "Downloading Data from Quick Base";
+			case 3:
+				return "Calculating Crew Boss Pay";
+			case 4:
+				return "Calculating Initial Gross";
+			case 5:
+				return "Calculating Paid Sick Leave";
+			case 6:
+				return "Calculating OT/DT/WOT/NPT/Minimum Makeup";
+			case 7:
+				return "Calculating Adjustments";
+			case 8:
+				return "Calculating Summaries";
+			case 9:
+				return "Uploading Completed Data to Quick Base";
+			case 10:
+				return "Completed Successfully";
+			case 11:
+				return "Failed";
+			default:
+				return "Unknown";
+		}
+	};
 	const renderRow = (batch) => {
 		return (
-			<tr key={batch.id}>
+			<tr
+				key={batch.id}
+				className={batch.isComplete ? "" : "alert alert-warning"}
+			>
 				<td>{batch.id}</td>
 				<td>
 					{batch.company === "P"
@@ -30,13 +63,11 @@ function BatchList(props) {
 				<td>{dateUtility.formatDateAndTime(batch.startDate)}</td>
 				<td>{dateUtility.formatDateAndTime(batch.endDate)}</td>
 				<td>
-					{batch.isComplete ? (
-						<span className="alert alert-success">Yes</span>
-					) : (
-						<span className="alert alert-warning">No</span>
-					)}
+					{statusText(batch.processingStatus)}
+					{batch.processingStatus === 11
+						? " - " + batch.statusMessage
+						: ""}
 				</td>
-				<td>{batch.owner}</td>
 			</tr>
 		);
 	};
@@ -55,8 +86,7 @@ function BatchList(props) {
 							<th>Date Created</th>
 							<th>Started</th>
 							<th>Completed</th>
-							<th>Is Complete</th>
-							<th>Owner</th>
+							<th>Status</th>
 						</tr>
 					</thead>
 					<tbody>{props.batches.map(renderRow)}</tbody>

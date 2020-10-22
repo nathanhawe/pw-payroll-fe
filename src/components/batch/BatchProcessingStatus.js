@@ -53,6 +53,9 @@ function BatchProcessingStatus(props) {
 			Current Status:{" "}
 			{props.batch &&
 				statusText(props.batch.processingStatus) +
+					(props.batch.processingStatus === 11
+						? " - " + props.batch.statusMessage
+						: "") +
 					" (updated at " +
 					dateUtility.formatDateAndTime(props.batch.dateModified) +
 					")"}

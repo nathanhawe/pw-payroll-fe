@@ -60,7 +60,20 @@ function BatchPage() {
 
 	const getStatus = async () => {
 		let status = await batchProcessingStatusApi.getCurrentStatus();
-		if (status.data) setProcessingBatch(status.data);
+		if (status.data) {
+			// Set the top level batch processing display
+			setBatches((_batches) => {
+				// Update the batch history list
+				for (let i = 0; i < _batches.length; i++) {
+					if (_batches[i].id === status.data.id) {
+						_batches[i] = status.data;
+						break;
+					}
+				}
+				return _batches;
+			});
+			setProcessingBatch(status.data);
+		}
 	};
 
 	function handleSubmit(event) {
