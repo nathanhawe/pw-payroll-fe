@@ -155,7 +155,7 @@ export default class AuthenticationService {
 		let applicationUser = await applicationUserProfileApi.getApplicationUserProfile();
 		localStorage.setItem(
 			"applicationUser",
-			JSON.stringify(applicationUser)
+			JSON.stringify(applicationUser.data)
 		);
 	};
 
