@@ -86,6 +86,18 @@ const Header = () => {
 						""
 					)}
 
+					{authContext.userCanView(ENTITY.user) ? (
+						<NavLink
+							to="users"
+							className="nav-link"
+							activeStyle={activeStyle}
+						>
+							Users
+						</NavLink>
+					) : (
+						""
+					)}
+
 					<NavLink to="logout" className="nav-link">
 						Logout
 					</NavLink>

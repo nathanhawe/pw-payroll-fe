@@ -18,6 +18,7 @@ import { SilentRenew } from "./auth/SilentRenew";
 import { Login } from "./auth/Login";
 import SummaryBatchPage from "./summaryBatch/SummaryBatchPage";
 import AuditLockBatchPage from "./auditLockBatch/AuditLockBatchPage";
+import UserPage from "./user/UserPage";
 
 function App() {
 	return (
@@ -66,6 +67,7 @@ function App() {
 							path="/minimum-wage"
 							component={MinimumWagePage}
 						/>
+						<PrivateRoute path="/users" component={UserPage} />
 						<Route component={NotFoundPage} />
 					</Switch>
 				</Router>
