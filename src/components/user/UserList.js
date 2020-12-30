@@ -9,7 +9,19 @@ function UserList(props) {
 				<td>{user.email}</td>
 				<td>{user.accessLevel}</td>
 				<td>{user.id}</td>
-				{/* <td>{props.canEdit ? <a href="">Edit</a> : ""}</td> */}
+				<td>
+					{props.canEdit ? (
+						<button
+							aria-label="Edit"
+							onClick={(e) => props.handleEdit(user, e)}
+						>
+							<i class="bi bi-pencil" aria-hidden="true"></i>
+							<label class="sr-only">Edit</label>
+						</button>
+					) : (
+						""
+					)}
+				</td>
 			</tr>
 		);
 	};
@@ -38,6 +50,7 @@ function UserList(props) {
 UserList.propTypes = {
 	canEdit: PropTypes.bool.isRequired,
 	users: PropTypes.array.isRequired,
+	handleEdit: PropTypes.func.isRequired,
 };
 
 export default UserList;
