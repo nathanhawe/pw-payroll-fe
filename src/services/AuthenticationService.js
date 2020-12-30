@@ -152,10 +152,10 @@ export default class AuthenticationService {
 
 	// Retrieves the application user from API
 	getApplicationUser = async () => {
-		let applicationUser = await applicationUserProfileApi.getApplicationUserProfile();
+		let applicationUser = await applicationUserProfileApi.getApplicationUserProfileFromSubject();
 		localStorage.setItem(
 			"applicationUser",
-			JSON.stringify(applicationUser)
+			JSON.stringify(applicationUser.data)
 		);
 	};
 
@@ -174,6 +174,8 @@ export default class AuthenticationService {
 		switch (accessLevel) {
 			case ACCESS_LEVEL.viewer:
 			case ACCESS_LEVEL.batchCreator:
+				if (entity === ENTITY.user) return false;
+				return true;
 			case ACCESS_LEVEL.administrator:
 				return true;
 			default:

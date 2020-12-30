@@ -23,6 +23,32 @@ export function retrieveSubject() {
 		: "";
 }
 
+export function retrieveFullName() {
+	const oidcStorage = getOidcStorage();
+
+	let givenName =
+		!!oidcStorage &&
+		!!oidcStorage.profile &&
+		!!oidcStorage.profile.given_name
+			? oidcStorage.profile.given_name
+			: "";
+	let familyName =
+		!!oidcStorage &&
+		!!oidcStorage.profile &&
+		!!oidcStorage.profile.family_name
+			? oidcStorage.profile.family_name
+			: "";
+	let fullName = `${givenName} ${familyName}`;
+	return fullName.trim();
+}
+
+export function retrieveEmail() {
+	const oidcStorage = getOidcStorage();
+	return !!oidcStorage && !!oidcStorage.profile && !!oidcStorage.profile.email
+		? oidcStorage.profile.email
+		: "";
+}
+
 // In a real app, would likely call an error logging service.
 export function handleError(error) {
 	// eslint-disable-next-line no-console

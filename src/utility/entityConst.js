@@ -3,4 +3,5 @@ export const ENTITY = {
 	crewBossWage: "crewBossWage",
 	crewLaborWage: "crewLaborWage",
 	minimumWage: "minimumWage",
+	user: "user",
 };
