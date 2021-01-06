@@ -56,6 +56,7 @@ function UserPage() {
 
 	const handleEdit = (u, e) => {
 		setUser(u);
+		setErrors({});
 	};
 
 	function handleSubmit(event) {

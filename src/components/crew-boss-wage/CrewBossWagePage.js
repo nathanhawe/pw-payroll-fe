@@ -58,12 +58,14 @@ function CrewBossWagePage() {
 
 	const handleAdd = () => {
 		setWage(generateEmptyWage);
+		setErrors({});
 		setDisplayForm(true);
 	};
 
 	const handleEdit = (wage, e) => {
 		wage.effectiveDate = dateUtility.formatDateForInput(wage.effectiveDate);
 		setWage(wage);
+		setErrors({});
 		setDisplayForm(true);
 	};
 
