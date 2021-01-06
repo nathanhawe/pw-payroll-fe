@@ -136,7 +136,10 @@ function CrewBossWagePage() {
 
 	function formIsValid() {
 		const _errors = {};
-		if (isNaN(wage.workerCountThreshold))
+		if (
+			isNaN(wage.workerCountThreshold) ||
+			wage.workerCountThreshold === ""
+		)
 			_errors.workerCountThreshold =
 				"Worker Count Threshold is required.";
 		if (
@@ -146,7 +149,8 @@ function CrewBossWagePage() {
 			_errors.workerCountThreshold =
 				"Worker Count Threshold must be a number value 0 or greater.";
 
-		if (isNaN(wage.wage)) _errors.wage = "Wage is required.";
+		if (isNaN(wage.wage) || wage.wage === "")
+			_errors.wage = "Wage is required.";
 		if (wage.wage && (isNaN(wage.wage) || wage.wage < 0))
 			_errors.wage = "Wage must be a number value 0 or greater.";
 
