@@ -178,7 +178,7 @@ function CrewBossWagePage() {
 				<>
 					<CrewBossWageList
 						wages={wages}
-						canEdit={authContext.userCanManage(ENTITY.user)}
+						canEdit={authContext.userCanManage(ENTITY.crewBossWage)}
 						handleEdit={handleEdit}
 						handleAdd={handleAdd}
 					/>
