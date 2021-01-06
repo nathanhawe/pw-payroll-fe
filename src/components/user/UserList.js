@@ -15,8 +15,8 @@ function UserList(props) {
 							aria-label="Edit"
 							onClick={(e) => props.handleEdit(user, e)}
 						>
-							<i class="bi bi-pencil" aria-hidden="true"></i>
-							<label class="sr-only">Edit</label>
+							<i className="bi bi-pencil" aria-hidden="true"></i>
+							<label className="sr-only">Edit</label>
 						</button>
 					) : (
 						""
