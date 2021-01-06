@@ -1,10 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as crewLaborWageApi from "../../api/crewLaborWageApi";
 import * as dateUtility from "../../utility/dateUtility";
+import { AuthenticationContext } from "../../providers/AuthenticationProvider";
+import { ENTITY } from "../../utility/entityConst";
 import PaginationControls from "../common/PaginationControls";
+import ServerErrors from "../common/ServerErrors";
+import CrewLaborWageForm from "./CrewLaborWageForm";
+import CrewLaborWageList from "./CrewLaborWageList";
 
 function CrewLaborWagePage() {
+	const generateEmptyWage = () => {
+		return {
+			id: "",
+			dateCreated: "",
+			dateModified: "",
+			effectiveDate: "",
+			isDeleted: "",
+			wage: "",
+		};
+	};
+	const authContext = useContext(AuthenticationContext);
+	const [wage, setWage] = useState(generateEmptyWage());
 	const [wages, setWages] = useState([]);
+	const [displayForm, setDisplayForm] = useState(false);
+	const [errors, setErrors] = useState({});
+	const [serverErrors, setServerErrors] = useState({});
 	const [pagination, setPagination] = useState({
 		offset: 0,
 		limit: 20,
@@ -35,42 +55,134 @@ function CrewLaborWagePage() {
 		});
 	};
 
-	function renderRow(wage) {
-		return (
-			<tr key={wage.id}>
-				<td>{wage.id}</td>
-				<td>{dateUtility.formatDate(wage.effectiveDate)}</td>
-				<td>{wage.wage.toFixed(2)}</td>
-			</tr>
-		);
+	const handleAdd = () => {
+		setWage(generateEmptyWage());
+		setErrors({});
+		setDisplayForm(true);
+	};
+
+	const handleEdit = (wage, e) => {
+		wage.effectiveDate = dateUtility.formatDateForInput(wage.effectiveDate);
+		setWage(wage);
+		setErrors({});
+		setDisplayForm(true);
+	};
+
+	const handleCancel = () => {
+		setWage(generateEmptyWage());
+		setDisplayForm(false);
+	};
+
+	function handleChange({ target }) {
+		setWage({
+			...wage,
+			[target.name]: target.value,
+		});
+
+		setErrors({
+			...errors,
+			[target.name]: "",
+		});
+	}
+
+	function handleSubmit(event) {
+		event.preventDefault();
+		if (!formIsValid()) return;
+		crewLaborWageApi.saveCrewLaborWage(wage).then((response) => {
+			if (response.errors) {
+				setServerErrors(response.errors);
+			} else {
+				// update states
+				setWages((_wages) => {
+					// For edits, update the existing record in the array
+					for (let i = 0; i < wages.length; i++) {
+						if (_wages[i].id === response.data.id) {
+							_wages[i] = response.data;
+							return _wages;
+						}
+					}
+
+					// No record was updated, so the submission is for a new record.
+					_wages.unshift(response.data);
+					return _wages;
+				});
+				setServerErrors({});
+				setWage(generateEmptyWage());
+				setDisplayForm(false);
+			}
+		});
+	}
+
+	const handleDelete = (e) => {
+		crewLaborWageApi.deleteCrewLaborWage(wage).then((response) => {
+			if (response.errors) {
+				setServerErrors(response.errors);
+			} else {
+				// Update states by removing the deleted record.
+				setWages((_wages) => {
+					for (let i = 0; i < wages.length; i++) {
+						if (_wages[i].id === wage.id) {
+							_wages.splice(i, 1);
+							break;
+						}
+					}
+					return _wages;
+				});
+				setServerErrors({});
+				setWage(generateEmptyWage());
+				setDisplayForm(false);
+			}
+		});
+	};
+
+	function formIsValid() {
+		const _errors = {};
+
+		if (isNaN(wage.wage) || wage.wage === "")
+			_errors.wage = "Wage is required.";
+		if (wage.wage && (isNaN(wage.wage) || wage.wage < 0))
+			_errors.wage = "Wage must be a number value 0 or greater.";
+
+		if (!wage.effectiveDate)
+			_errors.effectiveDate = "Effective Date is required.";
+
+		setErrors(_errors);
+
+		// From is valid if the errors object has no values
+		return Object.keys(_errors).length === 0;
 	}
 
 	return (
 		<>
-			<p>
-				Crew labor wages are typically set higher than minimum wage.
-				This table displays the wage and effective dates used for
-				calculating the crew labor rate in the time and attendance
-				calculations. If the effective crew labor rate is less than
-				minimum wage for the same date, minimum wage will be used. Do
-				not delete historical records as they are used for calculating
-				accurate values for adjustments.
-			</p>
-			<table className="table">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Effective Date</th>
-						<th>Wage</th>
-					</tr>
-				</thead>
-				<tbody>{wages && wages.map(renderRow)}</tbody>
-			</table>
-			<PaginationControls
-				pagination={pagination}
-				label="Crew labor wage pages"
-				onClick={handleClick}
-			/>
+			<br />
+			<ServerErrors errors={serverErrors} />
+
+			{displayForm ? (
+				<CrewLaborWageForm
+					wage={wage}
+					errors={errors}
+					onSubmit={handleSubmit}
+					onChange={handleChange}
+					onCancel={handleCancel}
+					onDelete={handleDelete}
+				/>
+			) : (
+				<>
+					<CrewLaborWageList
+						wages={wages}
+						canEdit={authContext.userCanManage(
+							ENTITY.crewLaborWage
+						)}
+						handleEdit={handleEdit}
+						handleAdd={handleAdd}
+					/>
+					<PaginationControls
+						pagination={pagination}
+						label="Crew labor wage pages"
+						onClick={handleClick}
+					/>
+				</>
+			)}
 		</>
 	);
 }
