@@ -1,6 +1,13 @@
 import { IDENTITY_CONFIG } from "../utility/authConst";
 export async function handleResponse(response) {
+	if (response.status === 204) return {};
 	if (response.ok || response.status === 400) return response.json();
+	if (response.status === 401)
+		return {
+			errors: {
+				Unauthorized: ["You are not authorized to take that action."],
+			},
+		};
 	// if (response.status === 400) {
 	// 	// So, a server-side validation error occurred.
 	// 	// Server side validation returns a string error message, so parse as text instead of json.
