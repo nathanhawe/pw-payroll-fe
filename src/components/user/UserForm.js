@@ -21,7 +21,7 @@ function UserForm(props) {
 						batches (default).
 					</li>
 					<li>
-						Batch Creater - Can see all tables except users and can
+						Batch Creator - Can see all tables except users and can
 						start batches.
 					</li>
 					<li>
@@ -32,10 +32,10 @@ function UserForm(props) {
 				<p>
 					Changing a user's access level will take effect immediately
 					on the server but the user may need to log out and then back
-					in again to see new features. For example, a 'Batch Creater'
+					in again to see new features. For example, a 'Batch Creator'
 					downgraded to 'None' will immediately lose access to
 					creating batches or refreshing the page but a user upgraded
-					from 'Viewer' to 'Batch Creater' will need to log out and
+					from 'Viewer' to 'Batch Creator' will need to log out and
 					back in again to see the forms to create batches.
 				</p>
 				<div className="form-group">
@@ -107,7 +107,7 @@ function UserForm(props) {
 						>
 							<option value="None">None</option>
 							<option value="Viewer">Viewer</option>
-							<option value="BatchCreater">Batch Creator</option>
+							<option value="BatchCreator">Batch Creator</option>
 							<option value="Administrator">Administrator</option>
 						</select>
 					</div>
