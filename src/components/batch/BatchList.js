@@ -29,6 +29,8 @@ function BatchList(props) {
 				return "Completed Successfully";
 			case 11:
 				return "Failed";
+			case 12:
+				return "Calculating Production Incentive Bonus"
 			default:
 				return "Unknown";
 		}
