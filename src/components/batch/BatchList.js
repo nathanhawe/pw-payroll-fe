@@ -54,7 +54,7 @@ function BatchList(props) {
 					<a
 						target="_new"
 						href={
-							"https://gerawan.quickbase.com/db/bk9rc7cxs?a=dr&rid=" +
+							"https://prima.quickbase.com/db/bk9rc7cxs?a=dr&rid=" +
 							batch.layoffId
 						}
 					>
